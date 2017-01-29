@@ -17,7 +17,7 @@ class Ability(base):
 
     id = Column(Integer, primary_key = True)
     name = Column(String(16), nullable = False)
-    short = Column(String(34), nullable = False)
+    short = Column(String(3), nullable = False)
 
     specialties = relationship("Specialty", back_populates="skill")
 

@@ -27,22 +27,26 @@ class Character(base):
     destiny = Column(Integer, nullable = False)
     injuries = Column(Integer, nullable = False, default=0)
     wounds = Column(Integer, nullable=False, default=0)
-    current_composure = Column(Integer, nullable = False)
-    current_helth = Column(Integer, nullable = False)
+    current_composure = Column(Integer, nullable = False) # Sang-froid
+    current_health = Column(Integer, nullable = False)
 
     abilities = relationship("CharacterAbility")
     edges = relationship("CharacterEdge")
 
     @hybrid_property
     def intrigue_defense(self):
+        """ SD à battre pour atteindre le personnage en intrigue """
         return self.ab_awa + self.ab_cun + self.ab_sta
 
     @hybrid_property
     def composure(self):
+        """ Sang-froid; santé d’intrigue """
         return self.ab_wil * 3
 
     @hybrid_property
     def combat_defense(self):
+        """ SD à battre pour toucher le personnage au combat """
+        # TODO: ajouter Malus d’Armure et propriétés Défensives des armes et boucliers
         return self.ab_agi + self.ab_ath + self.ab_awa
 
     @hybrid_property
@@ -57,6 +61,8 @@ class Character(base):
 
         if skey[0] == "ab":
             return abilities.filter(CharacterAbility.ability_id == skey[1])
+        elif skey[0] == "ed":
+            return edges.filter(CharacterEdge.edge_id == skey[1])
 
 
 class CharacterAbility(base):
