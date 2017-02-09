@@ -17,7 +17,8 @@ from sifbot.macros import Macro
 """
 all the true stuff beyond this point
 
-discord user id: 275289707796103168
+discord user id: 275299275888525312
+discord token: Mjc1Mjk5Mjc1ODg4NTI1MzEy.C2-oCQ.RO_EjRb-RcTbCtPXJj7GFnk3-Bg
 """
 
 description = """ FiveBot est un lanceur de dés pour le système Roll n' Keep.
@@ -82,8 +83,10 @@ def _macro_list(ctx):
 
     if len(macros):
         yield from bot.say("Voici les commandes que tu connais, petit yoriki:")
+        cmd_list = []
         for macro in macros:
-            yield from bot.say("!{}: {}".format(macro.name, macro.roll))
+            cmd_list.append("!{}: {}".format(macro.name, macro.roll))
+        yield from bot.say("\n".join(cmd_list))
     else:
         yield from bot.say("Tu n’as pas encore enregistré de jets de dés, petit scarabée.")
 
@@ -154,7 +157,9 @@ def on_message(msg):
             cmd = m.roll + " ".join(content[1:])
             bag = DiceBag(cmd.split(" "))
             try:
-                resp = "%s a lancé %s et a obtenu %s" % (user_nick,cmd, bag.roll())
+                result, successes = bag.roll()
+
+                resp = "%s a lancé %s et a obtenu %s" % (user_nick,cmd, result)
                 if m.comment is not None: resp += "\n# %s" % m.comment
                 if comment: resp += "\n# %s" % comment
             except DiceError as e:
@@ -165,4 +170,4 @@ def on_message(msg):
     yield from bot.process_commands(msg)
 
 
-bot.run(bot_email, bot_password)
+bot.run("Mjc1Mjk5Mjc1ODg4NTI1MzEy.C2-oCQ.RO_EjRb-RcTbCtPXJj7GFnk3-Bg")
